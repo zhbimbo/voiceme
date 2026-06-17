@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Бриф — VOICE ME</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --paper: #111111;
+      --text: #f2f2f2;
+      --muted: #9a9a9a;
+      --line: #2a2a2a;
+      --accent: #d4ff4d;
+      --accent-dim: rgba(212, 255, 77, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 18mm 20mm 22mm;
+      background: var(--paper);
+      page-break-after: always;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page:last-child { page-break-after: auto; }
+
+    .page > * { position: relative; z-index: 1; }
+
+    /* Cover */
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 257mm;
+    }
+
+    .cover__meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8pt;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .cover__title {
+      margin-top: 48mm;
+    }
+
+    .cover__title h1 {
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      font-size: 72pt;
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      font-weight: 400;
+    }
+
+    .cover__title h1 span { color: var(--accent); }
+
+    .cover__subtitle {
+      margin-top: 10mm;
+      font-size: 14pt;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 130mm;
+    }
+
+    .cover__goal {
+      margin-top: 16mm;
+      padding: 5mm 6mm;
+      border-left: 2px solid var(--accent);
+      background: var(--accent-dim);
+      font-size: 10pt;
+    }
+
+    .cover__footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8mm;
+      padding-top: 8mm;
+      border-top: 1px solid var(--line);
+      font-size: 8.5pt;
+      color: var(--muted);
+    }
+
+    .cover__footer strong { color: var(--text); display: block; margin-bottom: 1mm; }
+
+    /* Section headers */
+    .section-num {
+      font-size: 8pt;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 3mm;
+    }
+
+    h2 {
+      font-family: Impact, 'Arial Narrow', sans-serif;
+      font-size: 22pt;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      margin-bottom: 5mm;
+      line-height: 1.1;
+    }
+
+    h3 {
+      font-size: 10pt;
+      font-weight: 600;
+      margin: 5mm 0 2mm;
+      letter-spacing: 0.02em;
+    }
+
+    p { margin-bottom: 3mm; color: #ddd; }
+    p.lead { font-size: 11pt; color: var(--text); }
+
+    ul, ol { margin: 0 0 4mm 5mm; color: #ddd; }
+    li { margin-bottom: 1.5mm; }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 7mm 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 4mm 0 6mm;
+      font-size: 9.5pt;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 3mm 4mm;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #1a1a1a;
+      font-weight: 600;
+      font-size: 8.5pt;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Flow */
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2mm;
+      margin: 4mm 0 6mm;
+    }
+
+    .flow__item {
+      background: #1a1a1a;
+      border: 1px solid var(--line);
+      padding: 2.5mm 4mm;
+      font-size: 8.5pt;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .flow__arrow {
+      color: var(--accent);
+      font-size: 10pt;
+      align-self: center;
+    }
+
+    /* Blocks */
+    .block-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+      margin: 4mm 0;
+    }
+
+    .block-card {
+      border: 1px solid var(--line);
+      padding: 4mm;
+      background: #161616;
+    }
+
+    .block-card__label {
+      font-size: 7.5pt;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2mm;
+    }
+
+    .block-card h4 {
+      font-size: 9.5pt;
+      font-weight: 600;
+      margin-bottom: 2mm;
+    }
+
+    .block-card p, .block-card ul {
+      font-size: 8.5pt;
+      color: var(--muted);
+      margin: 0;
+      list-style: none;
+      padding: 0;
+    }
+
+    .block-card li::before { content: '— '; color: var(--line); }
+
+    /* Checklist */
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li {
+      display: flex;
+      gap: 3mm;
+      align-items: flex-start;
+      padding: 2mm 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 9.5pt;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-box {
+      width: 4mm;
+      height: 4mm;
+      border: 1.5px solid var(--muted);
+      flex-shrink: 0;
+      margin-top: 0.5mm;
+    }
+
+    /* Answer fields */
+    .question {
+      margin-bottom: 5mm;
+      padding-bottom: 4mm;
+      border-bottom: 1px solid var(--line);
+    }
+    .question__num {
+      font-size: 8pt;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 1mm;
+    }
+    .question__text { font-weight: 500; margin-bottom: 3mm; }
+    .answer-line {
+      height: 8mm;
+      border-bottom: 1px dashed #444;
+      margin-bottom: 2mm;
+    }
+
+    /* Quote */
+    blockquote {
+      border-left: 2px solid var(--accent);
+      padding: 3mm 5mm;
+      margin: 4mm 0;
+      background: var(--accent-dim);
+      font-style: italic;
+      color: #ccc;
+      font-size: 10pt;
+    }
+
+    /* Tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 2mm; margin: 3mm 0; }
+    .tag {
+      font-size: 8pt;
+      padding: 1.5mm 3mm;
+      border: 1px solid var(--line);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .page-footer {
+      position: absolute;
+      bottom: 14mm;
+      left: 20mm;
+      right: 20mm;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      color: #555;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .highlight { color: var(--accent); }
+    .muted { color: var(--muted); }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm;
+    }
+
+    .do-dont { margin: 4mm 0; }
+    .do-dont h3 { font-size: 9pt; margin-top: 0; }
+    .do { color: #b8e986; }
+    .dont { color: #ff8a8a; }
+  </style>
+</head>
+<body>
+
+  <!-- COVER -->
+  <div class="page cover">
+    <div class="cover__meta">
+      <span>Бриф на разработку</span>
+      <span>2026</span>
+    </div>
+
+    <div class="cover__title">
+      <h1>VOICE <span>ME</span></h1>
+      <p class="cover__subtitle">Сайт дикторского агентства — структура, стиль, материалы</p>
+      <div class="cover__goal">
+        <strong>Главная цель:</strong> человек за 30–60 секунд понимает, чем занимается VOICE ME,
+        слышит примеры работ и может оставить заявку без звонка.
+      </div>
+    </div>
+
+    <div class="cover__footer">
+      <div>
+        <strong>Для кого</strong>
+        Заказчик (не технарь). Заполни ответы и собери материалы — остальное сделаем мы.
+      </div>
+      <div>
+        <strong>Сейчас есть</strong>
+        Instagram: instagram.com/voice_____me<br />
+        Референсы дизайна: папка references (3 файла)
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Project + Structure -->
+  <div class="page">
+    <div class="section-num">01 / О проекте</div>
+    <h2>Коротко о проекте</h2>
+    <p class="lead">
+      <strong>VOICE ME</strong> — дикторское агентство / студия звука. Нужен
+      <strong>стильный, молодёжный сайт-визитка</strong>, куда можно вести людей из Instagram,
+      Telegram и рекламы.
+    </p>
+    <p>На сайте должно быть сразу понятно:</p>
+    <ul>
+      <li>чем вы занимаетесь;</li>
+      <li>какие услуги даёте;</li>
+      <li>как звучат / выглядят ваши работы;</li>
+      <li>как оставить заявку.</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <div class="section-num">02 / Первая версия</div>
+    <h2>Какой сайт делаем</h2>
+    <p class="lead">Рекомендуем <strong>одностраничный лендинг с якорным меню</strong> — визуально как полноценный сайт, но быстрее запустить.</p>
+
+    <div class="tags">
+      <span class="tag">Быстрый запуск</span>
+      <span class="tag">Ссылка в Instagram</span>
+      <span class="tag">Мобильная версия</span>
+      <span class="tag">Масштабируется позже</span>
+    </div>
+
+    <p><strong>Меню в шапке:</strong> Услуги &nbsp;|&nbsp; Кейсы &nbsp;|&nbsp; О нас &nbsp;|&nbsp; Заявка</p>
+
+    <div class="flow">
+      <span class="flow__item">Hero</span>
+      <span class="flow__arrow">→</span>
+      <span class="flow__item">Услуги</span>
+      <span class="flow__arrow">→</span>
+      <span class="flow__item">Кейсы</span>
+      <span class="flow__arrow">→</span>
+      <span class="flow__item">О нас</span>
+      <span class="flow__arrow">→</span>
+      <span class="flow__item">Процесс</span>
+      <span class="flow__arrow">→</span>
+      <span class="flow__item">FAQ</span>
+      <span class="flow__arrow">→</span>
+      <span class="flow__item">Заявка</span>
+      <span class="flow__arrow">→</span>
+      <span class="flow__item">Подвал</span>
+    </div>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>02</span>
+    </div>
+  </div>
+
+  <!-- PAGE 3: Style -->
+  <div class="page">
+    <div class="section-num">03 / Визуальный стиль</div>
+    <h2>Настроение и дизайн</h2>
+    <p>Ориентиры — 3 референса в папке <span class="highlight">references</span> + визуал из Instagram.</p>
+
+    <table>
+      <thead>
+        <tr><th>Что берём</th><th>Откуда</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Тёмный фон, зернистость, «киношная» атмосфера</td>
+          <td>Референс 1</td>
+        </tr>
+        <tr>
+          <td>Крупная жирная типографика, редакционный стиль, асимметрия</td>
+          <td>Референс 2</td>
+        </tr>
+        <tr>
+          <td>Центральная карточка, condensed-шрифт, минимализм</td>
+          <td>Референс 3</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="two-col do-dont">
+      <div>
+        <h3 class="do">Делаем</h3>
+        <ul>
+          <li>Молодёжный editorial / brutalist-lite</li>
+          <li>Чёрно-белая база + 1 акцентный цвет</li>
+          <li>Крупные заголовки, мало текста</li>
+          <li>Фото / видео со зерном, студийная эстетика</li>
+          <li>Лёгкие анимации, play на аудио</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="dont">Не делаем</h3>
+        <ul>
+          <li>Скучный корпоративный сайт</li>
+          <li>Пёстрые градиенты</li>
+          <li>Перегруженные слайдеры</li>
+          <li>Мелкий нечитаемый текст</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>03</span>
+    </div>
+  </div>
+
+  <!-- PAGE 4: Blocks 1-4 -->
+  <div class="page">
+    <div class="section-num">04 / Структура страницы</div>
+    <h2>Что видит посетитель</h2>
+
+    <div class="block-grid">
+      <div class="block-card">
+        <div class="block-card__label">Блок 1 — Hero</div>
+        <h4>Первый экран</h4>
+        <ul>
+          <li>Логотип / VOICE ME</li>
+          <li>Слоган (1 строка)</li>
+          <li>Кнопки: «Заявка» и «Кейсы»</li>
+          <li>Фон: студия, микрофон</li>
+        </ul>
+      </div>
+      <div class="block-card">
+        <div class="block-card__label">Блок 2 — Услуги</div>
+        <h4>Карточки услуг</h4>
+        <ul>
+          <li>Название + 1–2 предложения</li>
+          <li>Кнопка «Заказать» → форма</li>
+          <li>8 услуг (список ниже)</li>
+        </ul>
+      </div>
+      <div class="block-card">
+        <div class="block-card__label">Блок 3 — Кейсы</div>
+        <h4>Портфолио</h4>
+        <ul>
+          <li>Название + тип работы</li>
+          <li>Аудиоплеер / видео</li>
+          <li>1 строка результата</li>
+          <li>Минимум 4–6 кейсов</li>
+        </ul>
+      </div>
+      <div class="block-card">
+        <div class="block-card__label">Блок 4 — О нас</div>
+        <h4>Команда</h4>
+        <ul>
+          <li>3–5 предложений о себе</li>
+          <li>Фото команды / студии</li>
+          <li>Город и география работы</li>
+          <li>Цифры (если есть)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Примерный список услуг</h3>
+    <ol>
+      <li>Дикторское озвучивание</li>
+      <li>Музыкальное оформление роликов</li>
+      <li>Сведение и мастеринг</li>
+      <li>Коррекция голоса</li>
+      <li>Аранжировка</li>
+      <li>Видеомонтаж</li>
+      <li>Написание текстов / сценариев</li>
+      <li>Запись в студии</li>
+    </ol>
+    <p class="muted">Список — черновик. Поправь под реальные услуги.</p>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>04</span>
+    </div>
+  </div>
+
+  <!-- PAGE 5: Blocks 5-8 + Form -->
+  <div class="page">
+    <div class="block-grid">
+      <div class="block-card">
+        <div class="block-card__label">Блок 5 — Процесс</div>
+        <h4>4 шага</h4>
+        <ul>
+          <li>Заявка / бриф</li>
+          <li>Подбор голоса / концепции</li>
+          <li>Запись и продакшн</li>
+          <li>Сдача файлов</li>
+        </ul>
+      </div>
+      <div class="block-card">
+        <div class="block-card__label">Блок 6 — FAQ</div>
+        <h4>5–7 вопросов</h4>
+        <ul>
+          <li>Что такое VOICE ME?</li>
+          <li>Какие услуги?</li>
+          <li>Сроки? Языки?</li>
+          <li>Оплата? Удалённо?</li>
+          <li>Сколько стоит?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-num">Блок 7 — Форма заявки</div>
+    <h2>Заявки в Telegram</h2>
+    <p>Форма на сайте → уведомление в Telegram.</p>
+
+    <table>
+      <thead>
+        <tr><th>Поле</th><th>Обязательно</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Имя</td><td>Да</td></tr>
+        <tr><td>Телефон или Telegram</td><td>Да</td></tr>
+        <tr><td>Тип услуги (список)</td><td>Да</td></tr>
+        <tr><td>Описание задачи</td><td>Да</td></tr>
+        <tr><td>Срок / бюджет</td><td>Нет</td></tr>
+        <tr><td>Прикрепить файл</td><td>Нет</td></tr>
+      </tbody>
+    </table>
+    <p>После отправки: <em>«Спасибо, ответим в течение …»</em></p>
+
+    <h3>Блок 8 — Подвал</h3>
+    <p>Телефон · Telegram · Instagram · Email · Город · Копирайт</p>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>05</span>
+    </div>
+  </div>
+
+  <!-- PAGE 6: Checklist -->
+  <div class="page">
+    <div class="section-num">05 / Материалы</div>
+    <h2>Чеклист — что подготовить</h2>
+    <p>Без этого сайт будет пустым. Отметь по мере готовности.</p>
+
+    <h3>Обязательно</h3>
+    <ul class="checklist">
+      <li><span class="check-box"></span> Логотип VOICE ME (PNG/SVG, светлый и тёмный)</li>
+      <li><span class="check-box"></span> Короткий слоган (1 строка)</li>
+      <li><span class="check-box"></span> Текст «О нас» (5–10 предложений)</li>
+      <li><span class="check-box"></span> Финальный список услуг</li>
+      <li><span class="check-box"></span> 4–6 кейсов с аудио / видео файлами</li>
+      <li><span class="check-box"></span> Разрешение на публикацию кейсов</li>
+      <li><span class="check-box"></span> Контакты: телефон, Telegram, Instagram</li>
+      <li><span class="check-box"></span> 5–10 фото / видео для сайта</li>
+    </ul>
+
+    <h3>Желательно</h3>
+    <ul class="checklist">
+      <li><span class="check-box"></span> Логотипы клиентов</li>
+      <li><span class="check-box"></span> Отзывы (текст + имя / компания)</li>
+      <li><span class="check-box"></span> Акцентный цвет бренда</li>
+      <li><span class="check-box"></span> 2–3 сайта, которые нравятся</li>
+      <li><span class="check-box"></span> Язык сайта: RU / EN / оба</li>
+    </ul>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>06</span>
+    </div>
+  </div>
+
+  <!-- PAGE 7: Questions part 1 -->
+  <div class="page">
+    <div class="section-num">06 / Вопросы</div>
+    <h2>Нужны твои ответы</h2>
+    <p>Заполни до начала разработки.</p>
+
+    <div class="question">
+      <div class="question__num">01</div>
+      <div class="question__text">Как коротко описать VOICE ME? (1–2 предложения)</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">02</div>
+      <div class="question__text">Слоган для первого экрана (1 строка)</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">03</div>
+      <div class="question__text">Город и география работы</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">04</div>
+      <div class="question__text">Язык сайта: только RU или RU + EN?</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">05</div>
+      <div class="question__text">Тон: дерзкий / молодёжный или более премиальный?</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">06</div>
+      <div class="question__text">Цены на сайте: показываем или «по запросу»?</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">07</div>
+      <div class="question__text">Телефон для сайта</div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>07</span>
+    </div>
+  </div>
+
+  <!-- PAGE 8: Questions part 2 -->
+  <div class="page">
+    <div class="question">
+      <div class="question__num">08</div>
+      <div class="question__text">Telegram для заявок (@username, кто принимает)</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">09</div>
+      <div class="question__text">Email (если нужен)</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">10</div>
+      <div class="question__text">За сколько часов обещаем ответ? (например, 24ч)</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">11</div>
+      <div class="question__text">Какие 4–6 проектов выложить первыми?</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">12</div>
+      <div class="question__text">С кем из клиентов можно публично указать сотрудничество?</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">13</div>
+      <div class="question__text">Домен: есть или купить? (например voiceme.ru)</div>
+      <div class="answer-line"></div>
+    </div>
+    <div class="question">
+      <div class="question__num">14</div>
+      <div class="question__text">Нужны ли реквизиты / ИП / оферта?</div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>08</span>
+    </div>
+  </div>
+
+  <!-- PAGE 9: Drafts + Process + Done -->
+  <div class="page">
+    <div class="section-num">07 / Черновики текстов</div>
+    <h2>Заготовки — поправь своими словами</h2>
+
+    <h3>Hero</h3>
+    <blockquote>VOICE ME — студия озвучки и аудио-продакшна. Реклама, ролики, музыка, монтаж.</blockquote>
+
+    <h3>О нас</h3>
+    <blockquote>VOICE ME — команда, которая делает звук и видео под ключ: от рекламного ролика до полноценного продакшна. Работаем с брендами, агентствами и авторами.</blockquote>
+
+    <h3>Кнопки</h3>
+    <p>«Оставить заявку» · «Слушать кейсы» · «Написать в Telegram»</p>
+
+    <div class="divider"></div>
+
+    <div class="section-num">08 / Этапы работы</div>
+    <div class="flow">
+      <span class="flow__item">Бриф</span><span class="flow__arrow">→</span>
+      <span class="flow__item">Дизайн</span><span class="flow__arrow">→</span>
+      <span class="flow__item">Вёрстка</span><span class="flow__arrow">→</span>
+      <span class="flow__item">Контент</span><span class="flow__arrow">→</span>
+      <span class="flow__item">Запуск</span>
+    </div>
+    <p class="muted">Ориентир: 2–4 недели после сбора всех материалов.</p>
+
+    <div class="divider"></div>
+
+    <div class="section-num">09 / Критерии готовности</div>
+    <ul class="checklist">
+      <li><span class="check-box"></span> С телефона за 3 клика — заявка</li>
+      <li><span class="check-box"></span> Минимум 4 кейса с аудио / видео</li>
+      <li><span class="check-box"></span> Услуги понятным языком</li>
+      <li><span class="check-box"></span> Ссылки на Instagram и Telegram</li>
+      <li><span class="check-box"></span> Заявка приходит в Telegram</li>
+      <li><span class="check-box"></span> Стильный вид по референсам</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <div class="section-num">10 / Вторая версия (позже)</div>
+    <p class="muted">Голоса / дикторы · Блог · Калькулятор · EN-версия · Админка кейсов</p>
+
+    <div class="page-footer">
+      <span>Voice Me Brief</span>
+      <span>09</span>
+    </div>
+  </div>
+
+</body>
+</html>
