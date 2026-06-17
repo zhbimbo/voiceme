@@ -1,6 +1,29 @@
-# Voice Me — демо-сайт
+# VOICE ME
 
-Локальный пример лендинга с фейковыми данными.
+Демо-сайт дикторского агентства: лендинг с каталогом услуг, дикторов и кейсов.
+
+**Демо:** [zhbimbo.github.io/voiceme](https://zhbimbo.github.io/voiceme/)
+
+## О проекте
+
+VOICE ME — студия озвучки и аудио-продакшна. Сайт показывает услуги, голоса, портфолио и принимает заявки.
+
+Стек: HTML, CSS, vanilla JS, Vite. SPA-роутинг без фреймворков.
+
+### Структура
+
+| Раздел | Описание |
+|--------|----------|
+| Hero | Логотип, анимация появления, блок «Кто мы» |
+| Услуги | Аудиокниги, реклама, аудиогиды, музыка → страницы с процессом и прайсом |
+| Дикторы | Каталог голосов с тегами и аудио-сэмплами |
+| Кейсы | Книга, спектакль, реклама, музыка |
+| Почему мы | Преимущества студии |
+| Клиенты | Логотипы издательств |
+| Отзывы | Цитаты клиентов |
+| Контакты | Форма, карта, каналы связи |
+
+Внутренние страницы: `/services/:slug`, `/speakers`, `/speakers/:slug`, `/cases/:slug`.
 
 ## Запуск локально
 
@@ -9,57 +32,31 @@ npm install
 npm run dev
 ```
 
-Откроется [http://localhost:5173](http://localhost:5173)
+Сайт откроется на [http://localhost:5173](http://localhost:5173).
 
-## Выложить в сеть (для друга)
+Сборка:
 
-Есть два простых бесплатных варианта.
-
-### Вариант A — Vercel (быстрее всего, рекомендую)
-
-1. Залей проект на GitHub (см. ниже) **или** деплой прямо с компьютера:
-   ```bash
-   npx vercel
-   ```
-2. Следуй подсказкам в терминале (логин через браузер).
-3. Получишь ссылку вида `https://voice-me-xxxx.vercel.app` — её и кидай другу.
-
-Продакшн-деплой:
 ```bash
-npx vercel --prod
+npm run build
+npm run preview
 ```
 
-### Вариант B — GitHub Pages
+## Деплой
 
-1. Создай репозиторий на GitHub, например `voice-me`.
-2. Залей код:
-   ```bash
-   git init
-   git add .
-   git commit -m "Voice Me demo landing"
-   git branch -M main
-   git remote add origin https://github.com/ТВОЙ_ЮЗЕР/voice-me.git
-   git push -u origin main
-   ```
-3. На GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-4. После пуша Actions сам соберёт сайт. Ссылка будет:
-   `https://ТВОЙ_ЮЗЕР.github.io/voice-me/`
+Продакшн-сборка публикуется на **GitHub Pages** через Actions.
 
-Workflow уже лежит в [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+1. Push в ветку `main`
+2. **Settings → Pages → Source: GitHub Actions**
+3. Workflow: [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)
 
-## Что внутри
+Base path для Pages задаётся через `VITE_BASE` в workflow (по умолчанию `/voiceme/`).
 
-- Одностраничный лендинг: Hero, Услуги, Кейсы, О нас, Процесс, FAQ, Форма
-- Тёмный editorial-стиль по референсам
-- Аудиоплееры в кейсах (демо-звук)
-- Форма заявки с мок-API (в консоли сервера видно отправку)
+## Контент
 
-## Фейковые данные
+Все тексты, контакты и кейсы в демо — вымышленные. Редактирование: [`src/data/content.js`](src/data/content.js).
 
-Все контакты, клиенты и кейсы вымышленные. Реальный Instagram: [@voice_____me](https://www.instagram.com/voice_____me/).
+Реальный Instagram: [@voice_____me](https://www.instagram.com/voice_____me/).
 
-Контент правится в [`src/data/content.js`](src/data/content.js).
+## Документация
 
-## Бриф для заказчика
-
-PDF: [`BRIEF.pdf`](BRIEF.pdf)
+Бриф проекта: [`BRIEF.pdf`](BRIEF.pdf)
